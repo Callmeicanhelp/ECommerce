@@ -14,6 +14,13 @@ router.get('/', (req, res) => {
       attributes: ['product_name', 'category_id', 'stock', 'price']
     }
   })
+  .then(dbTagData => {
+    if(!dbTagData) {
+      res.status(404).json({message: 'No Tags found.'});
+      return
+    }
+    res.json(dbTagData)
+  })
 });
 
 router.get('/:id', (req, res) => {
@@ -28,6 +35,13 @@ router.get('/:id', (req, res) => {
       attributes: ['product_name', 'category_id', 'stock', 'price']
     }
   })
+  .then(dbTagData => {
+    if(!dbTagData) {
+      res.status(404).json({message: 'No tag id found.'})
+      return;
+    }
+    res.json(dbTagData);
+  })
 });
 
 router.post('/', (req, res) => {
@@ -35,6 +49,11 @@ router.post('/', (req, res) => {
   Tag.create({
     tag_name: req.body.tag_name
   })
+  .then(dbTagData => res.json(dbTagData))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 router.put('/:id', (req, res) => {
@@ -44,6 +63,13 @@ router.put('/:id', (req, res) => {
       id: req.params.id
     }
   })
+  .then(dbTagData => {
+    if(!dbTagData) {
+      res.status(404).json({message: 'No tag found with specified id.'});
+      return
+    }
+    res.json(dbTagData)
+  })
 });
 
 router.delete('/:id', (req, res) => {
@@ -52,6 +78,13 @@ router.delete('/:id', (req, res) => {
     where: {
       id: req.params.id
     }
+  })
+  .then(dbTagData => {
+    if(!dbTagData) {
+      res.status(404).json({message: 'No tag found with specified id.'});
+      return;
+    }
+    res.json(dbTagData);
   })
 });
 
